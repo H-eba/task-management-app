@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled1/firebase/firebase_function.dart';
+import 'package:untitled1/provider/my_provider.dart';
+import 'package:untitled1/ui/auth/register_screen.dart';
 import 'package:untitled1/ui/home/tabs/add_task_bottom_sheet.dart';
 import 'package:untitled1/ui/home/tabs/setting_tab.dart';
 import 'package:untitled1/ui/home/tabs/task_tab.dart';
@@ -15,15 +19,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<MyProvider>(context);
     return Scaffold(
       extendBody: true,
       backgroundColor: Color(0xFFDFECDB),
       appBar: AppBar(
         backgroundColor: Colors.blue,
         toolbarHeight: 80,
-        title: Text('To Do List',style: TextStyle(
+        title: Text('To Do '
+            //'${provider.userModle?.userName}'
+          ,style: TextStyle(
           color: Colors.white,fontSize: 30,
-        ),),),
+        ),),
+      actions: [IconButton(onPressed: (){
+        FirebaseFunction.logOut();
+        Navigator.pushNamedAndRemoveUntil(context, RegisterScreen.routeName, (route) => false);
+      }, icon:Icon(Icons.logout))],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
 

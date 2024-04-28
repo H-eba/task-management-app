@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/firebase/firebase_function.dart';
 import 'package:untitled1/ui/auth/componant/custom_text_form_field.dart';
 import 'package:untitled1/ui/auth/login_screen.dart';
 import 'package:untitled1/ui/auth/myValidations.dart';
@@ -99,15 +100,41 @@ class RegisterScreen extends StatelessWidget {
                               backgroundColor: Color(0xFF5D9CEC)),
                           onPressed: () {
                             register();
-                            Navigator.of(context).pushNamed(HomeScreen.routeName);
+                            FirebaseFunction.creatUaerAccount(
+                              userName: nameController.text,
+                              Email: emailController.text,
+                              Password: passwordController.text,
+                              onSuccess: (){
+                               Navigator.pushNamedAndRemoveUntil(context,HomeScreen.routeName, (route) => false);
+                              },
+                              onError: (errorMessage){
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(title: Text('Error'),
+                                content: Text(errorMessage),
+                                actions: [
+                                  ElevatedButton(onPressed: () {
+
+                                  }, child: Text('Thenks'))
+                                ],);
+                              },);
+                              }
+                               );
+
                           },
-                          child: Text('create account',style: TextStyle(color: Colors.white,
-                          fontSize: 20),)),
+                          child: Text(
+                            'create account',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )),
                     ),
-                    TextButton(onPressed: (){
-                      Navigator.of(context).pushNamed(LoginScreen.routeName);
-                    }, child: Text('aready have an account',
-                    style: TextStyle(fontSize: 15),))
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(LoginScreen.routeName);
+                        },
+                        child: Text(
+                          'aready have an account',
+                          style: TextStyle(fontSize: 15),
+                        ))
                   ],
                 ),
               ),
